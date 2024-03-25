@@ -7,13 +7,19 @@ For people with a background in software and are new to hardware, it can be very
 
 
 # Opcode And Instructions
-In order to get started, you'll need to understand opcodes and instructions. You can begin by choosing any set of instructions you want to use and assigning a number to them to them. While ARM has a massive library of different instructions to choose from, for the sake of simplicity we'll only be using 8 different 3-bit instructions and give them corresponding binary values. Below I have chosen 8 basic instructions and assigned a binary number (opcode) to each one.
+In order to get started, you'll need to understand opcodes and instructions. You can begin by choosing any set of instructions you want to use and assigning a number to them to them. While ARM has a massive library of different instructions to choose from, for the sake of simplicity we'll only be using 8 different 3-bit instructions and give them corresponding binary values. Below I have chosen 8 basic instructions and assigned a binary number (opcode) to each one. Each instruction will come with 3 other values and an optional comment. Instructions will generally be in the format:
+'''INSTR 1 4 7 comment
 
-ADD(0b000)
-SUB(0b001)
-LD(0b010)
-ST(0b011)
-BEQ(0b100)
-BNE(0b101)
-NOOP(0b110)
-HALT(0b111)
+
+Mathematical operation instructions:
+  ADD(0b000): 
+  SUB(0b001)
+Value transfer instrcutions:
+  LD(0b010)
+  ST(0b011)
+Comparison instructions:
+  BEQ(0b100)
+  BNE(0b101)
+Niche instrcutions:
+  NOOP(0b110)
+  HALT(0b111)
