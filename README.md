@@ -7,19 +7,19 @@ For people with a background in software and are new to hardware, it can be very
 
 
 # Opcode And Instructions
-In order to get started, you'll need to understand opcodes and instructions. You can begin by choosing any set of instructions you want to use and assigning a number to them to them. While ARM has a massive library of different instructions to choose from, for the sake of simplicity we'll only be using 8 different 3-bit instructions and give them corresponding binary values. Below I have chosen 8 basic instructions and assigned a binary number (opcode) to each one. Each instruction will come with 3 other values and an optional comment. Instructions will generally be in the format:
-```<br>INSTR 1 4 7 comment```
+In order to get started, you'll need to understand opcodes and instructions. You can begin by choosing any set of instructions you want to use and assigning a number to them to them. While ARM has a massive library of different instructions to choose from, LC2K allows you to simplfy things so there isn't an overwhelming amount of instructions to choose from. Each instruction will come with 3 other values representing registers, which can be treated as a form of storage for values which will all be defaulted to 0, and an optional comment. Instructions will generally be in the format: ```INSTR 1 4 7 comment``` the first value is meant to be an instruction (like ADD, SUB, BEQ, etc.) depending on what you want to happen to the following numbers, the following 3 values each play a different role depending on the instruction, but they generally represent field 1, field 2, and field 3 respectively, the comment is optional.
 
+For the sake of simplicity we'll only be using 8 different 3-bit instructions and give them corresponding binary values. Below I have chosen 8 basic instructions and assigned a binary number (opcode) to each one, and we will be using 8 registers to store values.
 
 Mathematical operation instructions:
-  ADD(0b000): 
-  SUB(0b001)
-Value transfer instrcutions:
-  LD(0b010)
-  ST(0b011)
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;ADD(0b000): This instruction is used for adding the value stored in the register represented by field 1 to the value sotred in the register represented by field 2, and storing the result in the destination register represented by field 3.
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;SUB(0b001): This instruction is used for adding the value stored in the register represented by field 1 to the value sotred in the register represented by field 2, and storing the result in the destination register represented by field 3.
+Value transfer instructions:
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;LD(0b010): this instruction breaks convention in that 
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;ST(0b011)
 Comparison instructions:
-  BEQ(0b100)
-  BNE(0b101)
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;BEQ(0b100)
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;BNE(0b101)
 Niche instrcutions:
-  NOOP(0b110)
-  HALT(0b111)
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;NOOP(0b110)
+  <br>&nbsp;&nbsp;&nbsp;&nbsp;HALT(0b111)
