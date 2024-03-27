@@ -1,5 +1,5 @@
 # What is LC2K?
-LC2K (or Little Computer 2K) is an extremely useful educational tool meant to simplify assembly languages in order to help beginners better understand the basics of computer architecture, and is used by many educators, students, and hobbyists. By reading machine code, LC2K can convert decimal numbers into instructions to perform in order to make a processor run. For people who plan on eventually learning about much larger subjects such as ARM, LC2K can be a great gateway into the beginner concepts.
+LC2K (or Little Computer 2K) is an extremely useful educational tool meant to simplify assembly languages in order to help beginners better understand the basics of computer architecture, and is used by many educators, students, and hobbyists. By reading machine code, LC2K can convert decimal numbers into instructions to perform in order to make a processor run. For people who plan on eventually learning about much larger subjects such as ARM, LC2K can be a great gateway into the beginner concepts.+
 
 
 # Why Simulate LC2K?
@@ -20,13 +20,13 @@ For the sake of simplicity we'll only be using 32-bit instructions and 8 differe
 <br>Mathematical operation instructions:
   <br>&nbsp;&nbsp;&nbsp;&nbsp;ADD(0b000): ```ADD 2 5 1``` will add the value stored in register 2 to the value stored in register 5 and store the result in register 1
   <br>&nbsp;&nbsp;&nbsp;&nbsp;SUB(0b001): ```SUB 7 0 3``` will subtract the value stored in register 0 to the value stored in register 7 and store the result in register 3
-<br>Value transfer instructions:
+<br><br>Value transfer instructions:
   <br>&nbsp;&nbsp;&nbsp;&nbsp;LD(0b010): ```LD 1 4 2``` will take the value stored in register 1, add it to the raw value 2, and use it as an index to determine which value in memory will be stored into register 4
   <br>&nbsp;&nbsp;&nbsp;&nbsp;ST(0b011): ```ST 2 1 3``` will take the value stored in register 1, add it to the raw value 3, and use it as an index for memory. The value stored in register 1 will be copied to said index in memory.
-<br>Comparison instructions:
+<br><br>Comparison instructions:
   <br>&nbsp;&nbsp;&nbsp;&nbsp;BEQ(0b100): ```BEQ 2 3 4``` will compare the values stored in register 2 and register 3. If they are equal, the program will change the current instruction to the 4th instruction in the input file.
   <br>&nbsp;&nbsp;&nbsp;&nbsp;BNE(0b101): ```BEQ 2 3 4``` will compare the values stored in register 2 and register 3. If they are not equal, the program will change the current instruction to the 4th instruction in the input file.
-<br>Niche instrcutions:
+<br><br>Niche instrcutions:
   <br>&nbsp;&nbsp;&nbsp;&nbsp;NOOP(0b110): ```NOOP``` is a standalone instruction and anything that follows will be treated as a comment. This instruction tells means to do nothing, and is useful in cases where pipelining is used to read multiple instructions at once, in order to stall the program so that updated values can be read when necessary.
   <br>&nbsp;&nbsp;&nbsp;&nbsp;HALT(0b111): ```HALT``` tells the program to stop running. The halt instruction can only be followed by additional raw numbers that will execute no instructions, but will be stored in memory.
 
