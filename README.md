@@ -30,7 +30,8 @@ For the sake of simplicity we'll only be using 32-bit instructions and 8 differe
   <br>&nbsp;&nbsp;&nbsp;&nbsp;NOOP(0b110): ```NOOP``` is a standalone instruction and anything that follows will be treated as a comment. This instruction tells means to do nothing, and is useful in cases where pipelining is used to read multiple instructions at once, in order to stall the program so that updated values can be read when necessary.
   <br>&nbsp;&nbsp;&nbsp;&nbsp;HALT(0b111): ```HALT``` tells the program to stop running. The halt instruction can only be followed by additional raw numbers that will execute no instructions, but will be stored in memory.
 
-
+# Reading in a file line by line
+Below is a C program that will read in every line in a txt file, and store them all in order in an array. Each string is then printed out on it's own individual line.
 ```
 #include <stdio.h>
 #include <stdlib.h>
@@ -67,13 +68,13 @@ int main() {
     //Prints out the file's contents line by line
     printf("Contents of the file:\n");
     for (int i = 0; i < numLines; i++) {
-        printf("Line %d: %s\n", i + 1, lines[i]);
+        printf(lines[i]);
     }
     return 0;
 }
 ```
 
-
+# Parsing a string by using whitespace as a delimiter
 ```
 #include <stdio.h>
 #include <stdlib.h>
