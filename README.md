@@ -17,7 +17,7 @@ Memory is where every instruction will be stored in order. For example, if instr
 
 For the sake of simplicity we'll only be using 32-bit instructions and 8 different 3-bit opcodes and give them corresponding binary values. Below I have chosen 8 basic instructions and assigned a binary number (opcode) to each one, and we will be using 8 registers to store values. The associated numbers are chosen at random for example purposes.
 
-<br>Mathematical operation instructions:
+Mathematical operation instructions:
   <br>&nbsp;&nbsp;&nbsp;&nbsp;ADD(0b000): ```ADD 2 5 1``` will add the value stored in register 2 to the value stored in register 5 and store the result in register 1
   <br>&nbsp;&nbsp;&nbsp;&nbsp;SUB(0b001): ```SUB 7 0 3``` will subtract the value stored in register 0 to the value stored in register 7 and store the result in register 3
 <br><br>Value transfer instructions:
@@ -75,6 +75,7 @@ int main() {
 ```
 
 # Parsing a string by using whitespace as a delimiter
+Below is a C program that takes in a string (in C a char array), and splits it into separate strings using whitespace as the delimiter for separation. Note that although the strings "pointless" and "comment" will be put into the array, they will be ignored when we run the actual program. For this example ```ADD 1 2 4 pointless comment``` is used.
 ```
 #include <stdio.h>
 #include <stdlib.h>
@@ -101,7 +102,7 @@ int separateByWhitespace(const char *str, char substrings[][1000], int *numSubst
         token = strtok(NULL, " \t\n");
     }
 
-    //Recount substring count
+    //Assign the number of substrings
     *numSubstrings = count;
     //Free up memory
     free(strCopy);
@@ -117,11 +118,60 @@ int main() {
     if (separateByWhitespace(str, substrings, &numSubstrings)) {
         printf("Number of substrings: %d\n", numSubstrings);
         for (int i = 0; i < numSubstrings; i++) {
-            printf("Substring %d: %s\n", i + 1, substrings[i]);
+            printf(substrings[i]);
         }
     } else {
         printf("Cannot separate string");
     }
+    return 0;
+}
+```
+
+# Using a Parsed String to Execute an Instruction
+Below is a function that executes the instruction ```ADD 1 2 4 pointless comment``` after it's been parsed and placed into its own array.
+```
+void executeInstr(char* instr[], int registers[], int n) {
+    if (strcmp(instr[0], "ADD") == 0) {
+        registers[int(instr[3])] = registers[int(instr[1])] + registers[int(instr[2])];
+    }
+    if (strcmp(instr[0], "SUB") == 0) {
+        registers[int(instr[3])] = registers[int(instr[1])] - registers[int(instr[2])];
+    }
+    if (strcmp(instr[0], "LD") == 0) {
+        
+    }
+    if (strcmp(instr[0], "ST") == 0) {
+
+    }
+    if (strcmp(instr[0], "BEQ") == 0) {
+        if (registers[int(instr[1])] == registers[int(instr[2])]) {
+            n = int(instr[3])
+        }
+    }
+    if (strcmp(instr[0], "BNE") == 0) {
+        if (registers[int(instr[1])] != registers[int(instr[2])]) {
+            n = int(instr[3])
+        }
+    }
+    if (strcmp(instr[0], "NOOP") == 0) {
+        pass
+    }
+    if (strcmp(instr[0], "HALT") == 0) {
+        for (int i = 0; i < 8; i++) {
+            printf("REGISTER %d: %d\n", i, registers[i]);
+        }
+        exit(0)
+    }
+}
+
+int main() {
+    int registers[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+    char instr[][1000] = {"ADD", "1", "2", "4", "pointless", "comment"};
+
+    for (int i = 0; i < 8; i++) {
+        printf("REGISTER %d: %d\n", i, registers[i]);
+    }
+
     return 0;
 }
 ```
