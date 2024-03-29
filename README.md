@@ -1,3 +1,7 @@
+# Reading Binary
+Binary is an alternate way to represent any number in 0s and 1s. The way you read it is by startinf from the right-most value, and incrementing an exponent starting with base 2. So if I had a binary value ```0b | 1 | 1 | 1 | 1```, this can be rewritten as ```2^3 | 2^2 | 2^1 | 2^0```. You will then add these numbers up to get your decimal value ```2^3 + 2^2 + 2^1 + 2^0 = 8 + 4 + 2 + 1 = 15``` so ```0b1111 = 15```. When you throw 0s into the mix, these can act as an off switch for its respective value. So if I change the binary to 0b1010, we then have ```2^3 + 0 + 2^1 + 0 = 8 + 0 + 2 + 0 = 10``` so ```0b1010 = 10```.
+
+
 # What is LC2K?
 LC2K (or Little Computer 2K) is an extremely useful educational tool meant to simplify assembly languages in order to help beginners better understand the basics of computer architecture, and is used by many educators, students, and hobbyists. By reading machine code, LC2K can convert decimal numbers into instructions to perform in order to make a processor run. For people who plan on eventually learning about much larger subjects such as ARM, LC2K can be a great gateway into the beginner concepts.+
 
@@ -7,16 +11,24 @@ For people with a background in software and are new to hardware, it can be very
 
 
 # Opcode And Instructions
-In order to get started, you'll need to understand opcodes and instructions. You can begin by choosing any set of instructions you want to use and assigning a number to them to them. While ARM has a massive library of different instructions to choose from, LC2K allows you to simplfy things so there isn't an overwhelming amount of instructions to choose from. 
+In order to get started, you'll need to understand opcodes and instructions. You can begin by choosing any set of instructions you want to use and assigning a number to them to them. While ARM has a massive library of different instructions to choose from, LC2K allows you to simplfy things so there isn't an overwhelming amount of instructions to choose from.
+
+
+# Translating instructions
+You can translate instructions to machine code values using binary. Using a 32-bit format, we can reserve bits for certain fields and opcodes. bits 0-15 will be reserved for field 3, bits 16-18 will be reserved for field 2, bits 19-21 will be reserved for field 1, and bits 22-24 will be reserved for the opcode. Bits 25-31 will remain empty. We will translate ```ADD 4 2 1``` as an example. Under "Instructions We Will Be Using", you can find that ADD has the associated binary 0b000 and has 3 reserved bits, 4 has a binary value of 0b100 and has 3 reserved bits, 2 has a binary value of 0b010 and has 3 reserved bits, and 1 has a value of 0b001 and has 16 reserved bits. When we line these values up, we get ```000 100 010 001 0000000000000001```, this leaves us with a final binary value of ```0b0001000100010000000000000001``` which translates to a decimal value of ```2228225```.
+
 
 # Registers
 Each instruction will come with 3 other values representing registers, which can be treated as a form of storage for values which will all be defaulted to 0, and an optional comment. a singualr instruction line will generally be in the format: ```INSTR 1 4 7 comment``` the first value is meant to be an instruction (like ADD, SUB, BEQ, etc.) depending on what you want to happen to the following numbers, the following 3 values each play a different role depending on the instruction, but they generally represent field 1, field 2, and field 3 respectively, the comment is optional.
 
+
 # Memory
-Memory is where every instruction will be stored in order. For example, if instruction 1 is ```ADD 4 2 1```, the value ```2228225``` will be stored at index 0 in memory. The explanation for how this was translated will be later explained.
+Memory is where every instruction will be stored in order. For example, if instruction 1 is ```ADD 4 2 1```, the value ```2228225``` will be stored at index 0 in memory.
 
 For the sake of simplicity we'll only be using 32-bit instructions and 8 different 3-bit opcodes and give them corresponding binary values. Below I have chosen 8 basic instructions and assigned a binary number (opcode) to each one, and we will be using 8 registers to store values. The associated numbers are chosen at random for example purposes.
 
+
+# Instructions We Will Be Using
 Mathematical operation instructions:
   <br>&nbsp;&nbsp;&nbsp;&nbsp;ADD(0b000): ```ADD 2 5 1``` will add the value stored in register 2 to the value stored in register 5 and store the result in register 1
   <br>&nbsp;&nbsp;&nbsp;&nbsp;SUB(0b001): ```SUB 7 0 3``` will subtract the value stored in register 0 to the value stored in register 7 and store the result in register 3
@@ -30,15 +42,16 @@ Mathematical operation instructions:
   <br>&nbsp;&nbsp;&nbsp;&nbsp;NOOP(0b110): ```NOOP``` is a standalone instruction and anything that follows will be treated as a comment. This instruction tells means to do nothing, and is useful in cases where pipelining is used to read multiple instructions at once, in order to stall the program so that updated values can be read when necessary.
   <br>&nbsp;&nbsp;&nbsp;&nbsp;HALT(0b111): ```HALT``` tells the program to stop running. The halt instruction can only be followed by additional raw numbers that will execute no instructions, but will be stored in memory.
 
+
 # Reading in a file line by line
-Below is a C program that will read in every line in a txt file, and store them all in order in an array. Each string is then printed out on it's own individual line.
+Below is a C program that will read in every line in a txt file, and store them all in order in an array. Each string is then printed out on it's own individual line. You will want to implement this in order to separate your txt file into separate instructions to execute. This will help you
 ```
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 int main() {
-    //An array that can hold up to 1000 strings. Each of which can be up to 1000 characters long. Also keeps a count of how many lines are read in
+    //An array that can hold up to 1000 strings. Each of which can be up to 1000 characters long.
     char lines[1000][1000];
     FILE *file;
     int numLines = 0;
@@ -68,11 +81,12 @@ int main() {
     //Prints out the file's contents line by line
     printf("Contents of the file:\n");
     for (int i = 0; i < numLines; i++) {
-        printf(lines[i]);
+        printf("%s\n", lines[i]);
     }
     return 0;
 }
 ```
+
 
 # Parsing a string by using whitespace as a delimiter
 Below is a C program that takes in a string (in C a char array), and splits it into separate strings using whitespace as the delimiter for separation. Note that although the strings "pointless" and "comment" will be put into the array, they will be ignored when we run the actual program. For this example ```ADD 1 2 4 pointless comment``` is used.
@@ -82,7 +96,7 @@ Below is a C program that takes in a string (in C a char array), and splits it i
 #include <string.h>
 
 // Function to separate a string by whitespace and store substrings in an array
-int separateByWhitespace(const char *str, char substrings[][1000], int *numSubstrings) {
+int separateByWhitespace(const char *str, char substrings[1000][1000], int *numSubstrings) {
     int count = 0;
     *numSubstrings = 0;
     char *token;
@@ -118,7 +132,7 @@ int main() {
     if (separateByWhitespace(str, substrings, &numSubstrings)) {
         printf("Number of substrings: %d\n", numSubstrings);
         for (int i = 0; i < numSubstrings; i++) {
-            printf(substrings[i]);
+            printf("%s\n", substrings[i]);
         }
     } else {
         printf("Cannot separate string");
@@ -127,36 +141,114 @@ int main() {
 }
 ```
 
-# Using a Parsed String to Execute an Instruction
-Below is a function that executes the instruction ```ADD 1 2 4 pointless comment``` after it's been parsed and placed into its own array.
-```
-void executeInstr(char* instr[], int registers[], int n) {
-    if (strcmp(instr[0], "ADD") == 0) {
-        registers[int(instr[3])] = registers[int(instr[1])] + registers[int(instr[2])];
-    }
-    if (strcmp(instr[0], "SUB") == 0) {
-        registers[int(instr[3])] = registers[int(instr[1])] - registers[int(instr[2])];
-    }
-    if (strcmp(instr[0], "LD") == 0) {
-        
-    }
-    if (strcmp(instr[0], "ST") == 0) {
 
+# Implementing ADD and SUB
+Below is a function that executes instructions ```ADD 1 2 4 pointless comment``` and ```SUB 7 6 5 pointless comment``` after they've been parsed and placed into its own array.
+```
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+void executeAddSub(char* instr[], int registers[]) {
+    if (strcmp(instr[0], "ADD") == 0) {
+        registers[atoi(instr[3])] = registers[atoi(instr[1])] + registers[atoi(instr[2])];
     }
-    if (strcmp(instr[0], "BEQ") == 0) {
-        if (registers[int(instr[1])] == registers[int(instr[2])]) {
-            n = int(instr[3])
+    else if (strcmp(instr[0], "SUB") == 0) {
+        registers[atoi(instr[3])] = registers[atoi(instr[1])] - registers[atoi(instr[2])];
+    }
+}
+
+int main() {
+    int registers[8] = {0, 1, 2, 3, 4, 5, 6, 7};
+    char* instr1[] = {"ADD", "1", "2", "4", "pointless", "comment"};
+    char* instr2[] = {"SUB", "7", "6", "5", "pointless", "comment"};
+    executeAddSub(instr1, registers);  //changed register 4 from 4 -> 3
+    executeAddSub(instr2, registers);  //changed register 5 from 5 -> 1
+
+    //should print "0, 1, 2, 3, 3, 1, 6, 7"
+    for (int i = 0; i < 8; i++) {
+        printf("REGISTER %d: %d\n", i, registers[i]);
+    }
+
+    return 0;
+}
+```
+
+
+# Implementing LD and ST
+```
+void executeLdSt(char* instr[], int* registers, int* memory) {
+    memoryIndex = registers[int(instr[1])] + int(instr[3]);
+    if (strcmp("LD") == 0) {
+        registers[int(instr[2])] = memory[memoryIndex];
+    }
+    else if (strcmp("ST") == 0) {
+         memory[memoryIndex] = registers[int(instr[2])];
+    }
+}
+
+int main() {
+    int registers[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+    int memory[] = {2, 37, 44490, 2261, 4444440};
+    char* instr1[] = {"LD", "1", "2", "4", "pointless", "comment"};  //puts 4444440 into register 2
+    char* instr2[] = {"LD", "1", "3", "0", "pointless", "comment"};  //puts 2 into register 3
+    char* instr3[] = {"ST", "3", "2", "1", "pointless", "comment"};  //replaces memory value 2261 with 4444440
+    executeLdSt(instr1, registers, memory);
+    executeLdSt(instr2, registers, memory);
+    executeLdSt(instr3, registers, memory);
+    printf("REGISTERS: ")
+    for (int i = 0; i < 8; i++) {
+        printf("%d, ", registers[i]);
+    }
+    printf("\n");
+    printf("MEMORY: ");
+    for (int i = 0; i < 5; i++) {
+        printf("%d, ", memory[i])
+    }
+}
+```
+
+
+# Implementing BEQ and BNE
+```
+void executeBeqBne(char* instr[], int *n) {
+    if (strcmp(instr[0], "BEQ")) {
+        if ((int(instr[1])) == (int(instr[2]))) {
+            *n = int(instr[3]);
         }
     }
-    if (strcmp(instr[0], "BNE") == 0) {
-        if (registers[int(instr[1])] != registers[int(instr[2])]) {
-            n = int(instr[3])
+    else if (strcmp(instr[0], "BNE")) {
+        if ((int(instr[1])) != (int(instr[2]))) {
+            *n = int(instr[3]);
         }
     }
+}
+
+int main() {
+    int registers[8] = {0, 0, 1, 1, 2, 2, 3, 3};
+    int n = 0;
+    char* instr1[] = {"BEQ", "0", "2", "4", "pointless", "comment"};  //reg0 = 0 and reg2 = 1 so n does not change to 4
+    printf(%d, n);
+    char* instr2[] = {"BEQ", "0", "1", "4", "pointless", "comment"};  //reg0 = 0 and reg1 = 0 so n does change to 4
+    printf(%d, n);
+    char* instr3[] = {"BNE", "0", "1", "8", "pointless", "comment"};  //reg0 = 0 and reg1 = 0 so n does not change to 8
+    printf(%d, n);
+    char* instr4[] = {"BNE", "0", "7", "8", "pointless", "comment"};  //reg0 = 0 and reg7 = 3 so n does change to 8
+    printf(%d, n);
+}
+```
+
+
+# Implementing NOOP and HALT
+```
+void executeNoopHalt(char* instr[], int* noopCount) {
     if (strcmp(instr[0], "NOOP") == 0) {
+        *noopCount++;
         pass
     }
     if (strcmp(instr[0], "HALT") == 0) {
+        printf("%s\n", "HALTED");
+        printf("NOOP COUNT: %d\n", noopCount);
         for (int i = 0; i < 8; i++) {
             printf("REGISTER %d: %d\n", i, registers[i]);
         }
@@ -165,13 +257,11 @@ void executeInstr(char* instr[], int registers[], int n) {
 }
 
 int main() {
-    int registers[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-    char instr[][1000] = {"ADD", "1", "2", "4", "pointless", "comment"};
-
-    for (int i = 0; i < 8; i++) {
-        printf("REGISTER %d: %d\n", i, registers[i]);
-    }
-
-    return 0;
+    int noopCount = 0;
+    char** instr1 = {"NOOP", "comment", "1"};
+    char** instr2 = {"NOOP", "comment", "2"};
+    char** instr3 = {"HALT", "comment", "3"};
+    printf("PROGRAM DID NOT HALT");
+    return 1;
 }
 ```
