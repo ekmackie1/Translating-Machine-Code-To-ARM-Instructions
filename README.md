@@ -182,12 +182,12 @@ int main() {
 #include <string.h>
 
 void executeLdSt(char* instr[], int* registers, int* memory) {
-    memoryIndex = registers[int(instr[1])] + int(instr[3]);
-    if (strcmp("LD") == 0) {
-        registers[int(instr[2])] = memory[memoryIndex];
+    int memoryIndex = registers[atoi(instr[1])] + atoi(instr[3]);
+    if (strcmp("LD", instr[0]) == 0) {
+        registers[atoi(instr[2])] = memory[memoryIndex];
     }
-    else if (strcmp("ST") == 0) {
-         memory[memoryIndex] = registers[int(instr[2])];
+    else if (strcmp("ST", instr[0]) == 0) {
+         memory[memoryIndex] = registers[atoi(instr[2])];
     }
 }
 
@@ -200,14 +200,14 @@ int main() {
     executeLdSt(instr1, registers, memory);
     executeLdSt(instr2, registers, memory);
     executeLdSt(instr3, registers, memory);
-    printf("REGISTERS: ")
+    printf("REGISTERS: ");
     for (int i = 0; i < 8; i++) {
         printf("%d, ", registers[i]);
     }
     printf("\n");
     printf("MEMORY: ");
     for (int i = 0; i < 5; i++) {
-        printf("%d, ", memory[i])
+        printf("%d, ", memory[i]);
     }
 }
 ```
@@ -219,15 +219,15 @@ int main() {
 #include <stdlib.h>
 #include <string.h>
 
-void executeBeqBne(char* instr[], int *n) {
-    if (strcmp(instr[0], "BEQ")) {
-        if ((int(instr[1])) == (int(instr[2]))) {
-            *n = int(instr[3]);
+void executeBeqBne(int* reg, char* instr[], int *n) {
+    if (strcmp(instr[0], "BEQ") == 0) {
+        if ((reg[atoi(instr[1])]) == (reg[atoi(instr[2])])) {
+            *n = atoi(instr[3]);
         }
     }
-    else if (strcmp(instr[0], "BNE")) {
-        if ((int(instr[1])) != (int(instr[2]))) {
-            *n = int(instr[3]);
+    else if (strcmp(instr[0], "BNE") == 0) {
+        if ((reg[atoi(instr[1])]) != (reg[atoi(instr[2])])) {
+            *n = atoi(instr[3]);
         }
     }
 }
@@ -236,13 +236,17 @@ int main() {
     int registers[8] = {0, 0, 1, 1, 2, 2, 3, 3};
     int n = 0;
     char* instr1[] = {"BEQ", "0", "2", "4", "pointless", "comment"};  //reg0 = 0 and reg2 = 1 so n does not change to 4
-    printf(%d, n);
+    executeBeqBne(registers, instr1, &n);
+    printf("%d\n", n);
     char* instr2[] = {"BEQ", "0", "1", "4", "pointless", "comment"};  //reg0 = 0 and reg1 = 0 so n does change to 4
-    printf(%d, n);
+    executeBeqBne(registers, instr2, &n);
+    printf("%d\n", n);
     char* instr3[] = {"BNE", "0", "1", "8", "pointless", "comment"};  //reg0 = 0 and reg1 = 0 so n does not change to 8
-    printf(%d, n);
+    executeBeqBne(registers, instr3, &n);
+    printf("%d\n", n);
     char* instr4[] = {"BNE", "0", "7", "8", "pointless", "comment"};  //reg0 = 0 and reg7 = 3 so n does change to 8
-    printf(%d, n);
+    executeBeqBne(registers, instr4, &n);
+    printf("%d\n", n);
 }
 ```
 
@@ -253,26 +257,25 @@ int main() {
 #include <stdlib.h>
 #include <string.h>
 
-void executeNoopHalt(char* instr[], int* noopCount) {
+void executeNoopHalt(char** instr, int* noopCount) {
     if (strcmp(instr[0], "NOOP") == 0) {
-        *noopCount++;
-        pass
+        *noopCount += 1;
     }
     if (strcmp(instr[0], "HALT") == 0) {
         printf("%s\n", "HALTED");
-        printf("NOOP COUNT: %d\n", noopCount);
-        for (int i = 0; i < 8; i++) {
-            printf("REGISTER %d: %d\n", i, registers[i]);
-        }
-        exit(0)
+        printf("NOOP COUNT: %d\n", *noopCount);
+        exit(0);
     }
 }
 
 int main() {
     int noopCount = 0;
-    char** instr1 = {"NOOP", "comment", "1"};
-    char** instr2 = {"NOOP", "comment", "2"};
-    char** instr3 = {"HALT", "comment", "3"};
+    char* instr1[] = {"NOOP", "comment", "1"};
+    char* instr2[] = {"NOOP", "comment", "2"};
+    char* instr3[] = {"HALT", "comment", "3"};
+    executeNoopHalt(instr1, &noopCount);
+    executeNoopHalt(instr2, &noopCount);
+    executeNoopHalt(instr3, &noopCount);
     printf("PROGRAM DID NOT HALT");
     return 1;
 }
