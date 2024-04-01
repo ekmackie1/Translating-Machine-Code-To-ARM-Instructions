@@ -177,6 +177,10 @@ int main() {
 
 # Implementing LD and ST
 ```
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 void executeLdSt(char* instr[], int* registers, int* memory) {
     memoryIndex = registers[int(instr[1])] + int(instr[3]);
     if (strcmp("LD") == 0) {
@@ -211,6 +215,10 @@ int main() {
 
 # Implementing BEQ and BNE
 ```
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 void executeBeqBne(char* instr[], int *n) {
     if (strcmp(instr[0], "BEQ")) {
         if ((int(instr[1])) == (int(instr[2]))) {
@@ -241,6 +249,10 @@ int main() {
 
 # Implementing NOOP and HALT
 ```
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 void executeNoopHalt(char* instr[], int* noopCount) {
     if (strcmp(instr[0], "NOOP") == 0) {
         *noopCount++;
