@@ -150,9 +150,11 @@ Below is a function that executes instructions ```ADD 1 2 4 pointless comment```
 #include <string.h>
 
 void executeAddSub(char* instr[], int registers[]) {
+    //if the instr is ADD, add the contents of the register in field1 to the contents of the register in field2 and store the result in reg3
     if (strcmp(instr[0], "ADD") == 0) {
         registers[atoi(instr[3])] = registers[atoi(instr[1])] + registers[atoi(instr[2])];
     }
+    //if the instr is SUB, subtract the contents of the register in field2 from the contents of the register in field1 and store the result in reg3
     else if (strcmp(instr[0], "SUB") == 0) {
         registers[atoi(instr[3])] = registers[atoi(instr[1])] - registers[atoi(instr[2])];
     }
@@ -181,11 +183,15 @@ int main() {
 #include <stdlib.h>
 #include <string.h>
 
+
 void executeLdSt(char* instr[], int* registers, int* memory) {
+    //get an index for what position in memory will be used by adding the contents of reg1 to the raw value in field3
     int memoryIndex = registers[atoi(instr[1])] + atoi(instr[3]);
+    //load the designated memory value into the register specified in field2
     if (strcmp("LD", instr[0]) == 0) {
         registers[atoi(instr[2])] = memory[memoryIndex];
     }
+    //take the value stored in the register indicated in field2 and store it into the designated memory index
     else if (strcmp("ST", instr[0]) == 0) {
          memory[memoryIndex] = registers[atoi(instr[2])];
     }
@@ -221,11 +227,13 @@ int main() {
 
 void executeBeqBne(int* reg, char* instr[], int *n) {
     if (strcmp(instr[0], "BEQ") == 0) {
+        //if the contents in the registers of field1 and field2 are equal, change n to the raw value in field3
         if ((reg[atoi(instr[1])]) == (reg[atoi(instr[2])])) {
             *n = atoi(instr[3]);
         }
     }
     else if (strcmp(instr[0], "BNE") == 0) {
+        //if the contents in the registers of field1 and field2 are not equal, change n to the raw value in field3
         if ((reg[atoi(instr[1])]) != (reg[atoi(instr[2])])) {
             *n = atoi(instr[3]);
         }
