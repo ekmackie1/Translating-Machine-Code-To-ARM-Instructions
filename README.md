@@ -44,6 +44,10 @@ Mathematical operation instructions:
 
 
 # Reading in a file line by line
+In order to read in a plain text file line by line, you will first have to initialize a FILE object as such:
+<br>```FILE file``` with "file" being whatever you want the variable name to be.
+<br>
+
 Below is a C program that will read in every line in a txt file, and store them all in order in an array. Each string is then printed out on it's own individual line. You will want to implement this in order to separate your txt file into separate instructions to execute. This will help you
 ```
 #include <stdio.h>
