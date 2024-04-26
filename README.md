@@ -1,13 +1,15 @@
-# Reading Binary
-Binary is an alternate way to represent any number in 0s and 1s. The way you read it is by startinf from the right-most value, and incrementing an exponent starting with base 2. So if I had a binary value ```0b | 1 | 1 | 1 | 1```, this can be rewritten as ```2^3 | 2^2 | 2^1 | 2^0```. You will then add these numbers up to get your decimal value ```2^3 + 2^2 + 2^1 + 2^0 = 8 + 4 + 2 + 1 = 15``` so ```0b1111 = 15```. When you throw 0s into the mix, these can act as an off switch for its respective value. So if I change the binary to 0b1010, we then have ```2^3 + 0 + 2^1 + 0 = 8 + 0 + 2 + 0 = 10``` so ```0b1010 = 10```.
-
-
 # What is LC2K?
 LC2K (or Little Computer 2K) is an extremely useful educational tool meant to simplify assembly languages in order to help beginners better understand the basics of computer architecture, and is used by many educators, students, and hobbyists. By reading machine code, LC2K can convert decimal numbers into instructions to perform in order to make a processor run. For people who plan on eventually learning about much larger subjects such as ARM, LC2K can be a great gateway into the beginner concepts.+
 
-
 # Why Simulate LC2K?
 For people with a background in software and are new to hardware, it can be very helpful to ease people in to the subject by teaching it through a programming language such as C. On top of this, simulating LC2K is very modular in that you as a programmer will be granted the freedom of choosing any subset of instructions available, assign any opcode values to them, and organize whether you want your program to read hexadecimal, decimal, and/or binary numbers.
+
+
+# Reading Binary
+Binary is an alternate way to represent any number in 0s and 1s. The way you read it is by startinf from the right-most value, and incrementing an exponent starting with base 2. So if I had a binary value ```0b | 1 | 1 | 1 | 1```, this can be rewritten as ```2^3 | 2^2 | 2^1 | 2^0```. You will then add these numbers up to get your decimal value ```2^3 + 2^2 + 2^1 + 2^0 = 8 + 4 + 2 + 1 = 15``` so ```0b1111 = 15```. When you throw 0s into the mix, these can act as an off switch for its respective value. So if I change the binary to 0b1010, we then have ```2^3 + 0 + 2^1 + 0 = 8 + 0 + 2 + 0 = 10``` so ```0b1010 = 10```.
+
+# Manipulating Binary
+Bianry shifting is another relevant and useful for manipulating instructions translated to integers. In order to shift bianry values, you can take an example variable like ```n = 0b010``` and apply ```n = n << 1``` to set ```n = 0b0100```, this happened because the binary value was shifted one position to the left. Using this example, all cases of this can be set up as such: ```[value] = [value] [operator] [spaces to shift]``` where ```[value]``` is the value to be shifted, ```[operator]``` is either << or >> for left and right shift respectively, and ```[spaces to shift]``` represented the amound of times to shift in the specified direction. Note that these values will be limited by how many bit they can hold, so a 4 bit int being shifted left, will cause the greatest bit to be lost and defaulted to 0. 
 
 
 # Opcode And Instructions
@@ -44,10 +46,6 @@ Mathematical operation instructions:
 
 
 # Reading in a file line by line
-In order to read in a plain text file line by line, you will first have to initialize a FILE object as such:
-<br>```FILE file``` with "file" being whatever you want the variable name to be.
-<br>
-
 Below is a C program that will read in every line in a txt file, and store them all in order in an array. Each string is then printed out on it's own individual line. You will want to implement this in order to separate your txt file into separate instructions to execute. This will help you
 ```
 #include <stdio.h>
@@ -292,3 +290,5 @@ int main() {
     return 1;
 }
 ```
+
+<br>You can apply these templates to create any oher examples you want with any conditions, allowing you to even make instructions that don't actually exist.
